@@ -11,8 +11,6 @@ const issueSchema = new Schema({
     status_text: { type: String, default: "" },
 });
 
-const Issue = model("Issue", issueSchema);
-
 const projectSchema = new Schema({
     name: { type: String, required: true },
     issues: [issueSchema],
@@ -20,4 +18,4 @@ const projectSchema = new Schema({
 
 const Project = model("Project", projectSchema);
 
-module.exports = { Project, Issue };
+module.exports = { Project };
