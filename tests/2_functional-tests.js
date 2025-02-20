@@ -139,7 +139,7 @@ suite("Functional Tests", function () {
             .keepOpen()
             .put("/api/issues/apitest")
             .send({
-                _id: "67b771a5f10576b4427cfe47",
+                _id: testId,
                 assigned_to: "New Tester",
                 title: "TestUpdate",
             })
