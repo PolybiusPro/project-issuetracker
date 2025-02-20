@@ -74,7 +74,7 @@ suite("Functional Tests", function () {
                 assert.strictEqual(res.status, 200);
                 assert.strictEqual(
                     res.body.error,
-                    "Missing required field(s)"
+                    "required field(s) missing"
                 );
                 done();
             });
@@ -175,8 +175,8 @@ suite("Functional Tests", function () {
                 assert.strictEqual(res.status, 200);
                 assert.strictEqual(res.body._id, testId);
                 assert.strictEqual(
-                    res.body.result,
-                    "successfully updated"
+                    res.body.error,
+                    "no update field(s) sent"
                 );
                 done();
             });

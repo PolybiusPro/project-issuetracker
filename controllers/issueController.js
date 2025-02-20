@@ -29,7 +29,7 @@ const postIssue = async (req, res) => {
         );
         res.json(issue);
     } catch (err) {
-        res.status(200).json({ error: "Missing required field(s)" });
+        res.status(200).json({ error: "required field(s) missing" });
     }
 };
 
@@ -45,7 +45,7 @@ const getIssues = async (req, res) => {
 
         Object.keys(filters).forEach((field) => {
             issues = issues.filter((issue) => {
-                return issue[field] === filters[field];
+                return issue[field].toString() === filters[field];
             });
         });
 
@@ -68,29 +68,38 @@ const putIssue = async (req, res) => {
 
         const issueToEdit = projectQuery.issues.id(req.body._id);
 
-        if (!issueToEdit) {
+        const fieldsToEdit = req.body;
+        const fieldKeys = Object.keys(fieldsToEdit).filter((key) => {
+            return fieldsToEdit[key] !== "";
+        });
+
+        if (fieldKeys.length === 1) {
             return res.json({
+                error: "no update field(s) sent",
                 _id: req.body._id,
-                error: "could not update",
             });
         }
 
-        const fieldsToEdit = req.body;
-
-        Object.keys(fieldsToEdit).forEach((field) => {
+        fieldKeys.forEach((field) => {
             if (field !== "_id") {
                 issueToEdit[field] = fieldsToEdit[field];
             }
         });
 
+        issueToEdit.updated_on = new Date();
+
         await projectQuery.save();
+
         res.json({
             _id: req.body._id,
             result: "successfully updated",
         });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: "Server error" });
+        res.json({
+            error: "could not update",
+            _id: req.body._id,
+        });
     }
 };
 
