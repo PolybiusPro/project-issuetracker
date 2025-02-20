@@ -95,7 +95,6 @@ const putIssue = async (req, res) => {
             result: "successfully updated",
         });
     } catch (err) {
-        console.error(err);
         res.json({
             error: "could not update",
             _id: req.body._id,

@@ -186,7 +186,7 @@ suite("Functional Tests", function () {
         chai.request(server)
             .keepOpen()
             .put("/api/issues/apitest")
-            .send({ _id: "notvalid" })
+            .send({ _id: "notvalid", open: false })
             .end((err, res) => {
                 assert.strictEqual(res.status, 200);
                 assert.strictEqual(res.body._id, "notvalid");
