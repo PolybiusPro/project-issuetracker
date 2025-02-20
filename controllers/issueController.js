@@ -34,11 +34,22 @@ const postIssue = async (req, res) => {
 };
 
 const getIssues = async (req, res) => {
+    const filters = req.query;
+
     try {
         const projectQuery = await Project.findOne({
             name: req.params.project,
         }).exec();
-        res.json(projectQuery.issues);
+
+        let issues = projectQuery.issues;
+
+        Object.keys(filters).forEach((field) => {
+            issues = issues.filter((issue) => {
+                return issue[field] === filters[field];
+            });
+        });
+
+        res.json(issues);
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: "Server error" });
