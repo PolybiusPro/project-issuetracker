@@ -29,7 +29,7 @@ suite("Functional Tests", function () {
                 assert.strictEqual(res.body.assigned_to, "Tester");
                 assert.isString(res.body.created_on);
                 assert.isString(res.body.updated_on);
-                assert.isTrue(res.body.is_open);
+                assert.isTrue(res.body.open);
                 assert.strictEqual(res.body.status_text, "In QA");
                 done();
             });
@@ -53,9 +53,9 @@ suite("Functional Tests", function () {
                 );
                 assert.strictEqual(res.body.created_by, "Tester");
                 assert.strictEqual(res.body.assigned_to, "");
-                assert.isString(body.created_on);
-                assert.isString(body.updated_on);
-                assert.isTrue(res.body.is_open);
+                assert.isString(res.body.created_on);
+                assert.isString(res.body.updated_on);
+                assert.isTrue(res.body.open);
                 done();
             });
     });
@@ -65,7 +65,7 @@ suite("Functional Tests", function () {
             .post("/api/issues/apitest")
             .send({})
             .end((err, res) => {
-                assert.strictEqual(res.status, 200);
+                assert.strictEqual(res.status, 400);
                 assert.strictEqual(
                     res.body.error,
                     "Missing required field(s)"
@@ -89,7 +89,7 @@ suite("Functional Tests", function () {
             .get("/api/issues/apitest?created_by=Test")
             .end((err, res) => {
                 assert.strictEqual(res.status, 200);
-                assert.includeDeepMembers(res.body, [
+                assert.deepInclude(res.body, [
                     { created_by: "Test" },
                 ]);
                 done();
@@ -101,7 +101,7 @@ suite("Functional Tests", function () {
             .get("/api/issues/apitest?created_by=Test&open=true")
             .end((err, res) => {
                 assert.strictEqual(res.status, 200);
-                assert.includeDeepMembers(res.body, [
+                assert.deepInclude(res.body, [
                     { created_by: "Test", open: true },
                 ]);
                 done();
