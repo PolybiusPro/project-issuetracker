@@ -1,22 +1,15 @@
 const { Project } = require("../models/issueModel");
 
 const postIssue = async (req, res) => {
-    const {
-        issue_title,
-        issue_text,
-        created_by,
-        assigned_to,
-        open,
-        status_text,
-    } = req.body;
+    const reqs = req.body;
 
     const issue = new Project().issues.create({
-        issue_title,
-        issue_text,
-        created_by,
-        assigned_to,
-        open,
-        status_text,
+        issue_title: reqs.issue_title,
+        issue_text: reqs.issue_text,
+        created_by: reqs.created_by,
+        assigned_to: reqs.assigned_to,
+        open: reqs.open,
+        status_text: reqs.status_text,
     });
 
     try {
