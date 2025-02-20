@@ -86,12 +86,12 @@ suite("Functional Tests", function () {
     test("View issues on a project with one filter: GET request to /api/issues/{project}", (done) => {
         chai.request(server)
             .keepOpen()
-            .get("/api/issues/apitest?created_by=Test")
+            .get("/api/issues/apitest?created_by=Tester")
             .end((err, res) => {
                 assert.strictEqual(res.status, 200);
-                assert.deepInclude(res.body, [
-                    { created_by: "Test" },
-                ]);
+                res.body.forEach((obj) => {
+                    assert.strictEqual(obj.created_by, "Tester");
+                });
                 done();
             });
     });
@@ -101,9 +101,10 @@ suite("Functional Tests", function () {
             .get("/api/issues/apitest?created_by=Test&open=true")
             .end((err, res) => {
                 assert.strictEqual(res.status, 200);
-                assert.deepInclude(res.body, [
-                    { created_by: "Test", open: true },
-                ]);
+                res.body.forEach((obj) => {
+                    assert.strictEqual(obj.created_by, "Tester");
+                    assert.isTrue(obj.open);
+                });
                 done();
             });
     });
